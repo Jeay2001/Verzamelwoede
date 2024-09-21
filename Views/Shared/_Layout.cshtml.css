@@ -6,6 +6,15 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    height: 100%;
+}
 
 a {
   color: #0077cc;
