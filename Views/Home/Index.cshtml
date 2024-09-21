@@ -1,7 +1,41 @@
-﻿@{
+﻿@model IEnumerable<VerzamelWoede.Models.Item>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div>
 
+<div class="container " style="width:30%">
+    <!-- Header row with centered text -->
+    <div class="row">
+        <div class="col-md-12 text-center text-white" style="background-color:#28190E;">
+            <h4>My Items</h4>
+        </div>
+    </div>
+    <div class=""style="background-color:#839073;">
+
+        <!-- Column headers row -->
+        <div class="row">
+            <div class="col-md-3" style="font-weight:bold;">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-3" style="font-weight:bold;">
+                @Html.DisplayNameFor(model => model.Price)
+            </div>
+        </div>
+
+        <!-- Data rows -->
+        @foreach (var item in Model)
+        {
+            <div class="row py-2">
+                <div class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </div>
+                <div class="col-md-3">
+                    €@Html.DisplayFor(modelItem => item.Price)
+                </div>
+            </div>
+        }
+        </div>
 </div>
+
+

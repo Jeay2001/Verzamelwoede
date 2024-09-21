@@ -17,33 +17,10 @@ namespace Verzamelwoede.Controllers
             _context = context;
         }
 
-        // GET: /Home/Items
-        public async Task<IActionResult> Items()
+        public async Task<IActionResult> Index()
         {
-            var items = await _context.Items.ToListAsync();
-            return View(items);
-        }
-
-        // GET: /Home/Item/5
-        public async Task<IActionResult> Item(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return View(item);
-        }
-        public IActionResult Index()
-        {
-            return View();
+            var items = await _context.Items.ToListAsync(); // Fetch all items from the database
+            return View(items); // Pass the list of items to the view
         }
 
         public IActionResult Privacy()
@@ -56,6 +33,5 @@ namespace Verzamelwoede.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
