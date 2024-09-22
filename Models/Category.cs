@@ -22,5 +22,11 @@ namespace VerzamelWoede.Models
         //navigatie property naar de collection
         public ICollection<Collection>? Collections { get; set; }
         public ICollection<Item>? Items { get; set; }
+
+
+        public void Create() { }
+        public void Update() { }
+        public void Delete() { }
+        public void Read() { }
     }
 }

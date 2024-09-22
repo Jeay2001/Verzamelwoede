@@ -27,6 +27,19 @@ namespace VerzamelWoede.Models
         public int CategoryId { get; set; }
         public virtual Category? Category { get; set; } = null!;
 
+        public void CalculatePriceDifference(){}
+
+        public void MarkAsLost(){}
+
+        public void MarkAsSold(){}
+
+        public void Create() { }
+        public void Update() { }
+        public void Delete() { }
+        public void Read() { }
+
+
 
     }
+    
 }

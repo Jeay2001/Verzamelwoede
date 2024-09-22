@@ -17,5 +17,10 @@ namespace VerzamelWoede.Models
 
         public ICollection<Category>? Categories { get; set; }
 
+
+        public void Create() { }
+        public void Update() { }
+        public void Delete() { }
+        public void Read() { }
     }
 }
