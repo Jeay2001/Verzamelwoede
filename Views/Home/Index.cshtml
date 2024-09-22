@@ -4,38 +4,45 @@
 }
 
 
-<div class="container " style="width:30%">
-    <!-- Header row with centered text -->
-    <div class="row">
-        <div class="col-md-12 text-center text-white" style="background-color:#28190E;">
-            <h4>My Items</h4>
-        </div>
+<div class="container" style="width: 30%; margin-top: 200px; margin-left:150px;">
+    
+
+    <div class="" style="background-color: #839073;">
+        <table class="table ">
+            <thead>
+                <tr class="col-md-12  text-center text-white" style="background-color: #28190E;">
+                    <th colspan="2">My Items</th>
+                </tr>
+            </thead>
+
+            <!-- Column headers row -->
+            <thead>
+                <tr class="text-white">
+                    <th style="font-weight:bold; border-bottom:none">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th style="font-weight:bold; border-bottom:none">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                </tr>
+            </thead>
+
+            <!-- Data rows -->
+            <tbody class="text-white">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="border-bottom:none">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td style="border-bottom:none">
+                            €@Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-    <div class=""style="background-color:#839073;">
-
-        <!-- Column headers row -->
-        <div class="row">
-            <div class="col-md-3" style="font-weight:bold;">
-                @Html.DisplayNameFor(model => model.Name)
-            </div>
-            <div class="col-md-3" style="font-weight:bold;">
-                @Html.DisplayNameFor(model => model.Price)
-            </div>
-        </div>
-
-        <!-- Data rows -->
-        @foreach (var item in Model)
-        {
-            <div class="row py-2">
-                <div class="col-md-3">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </div>
-                <div class="col-md-3">
-                    €@Html.DisplayFor(modelItem => item.Price)
-                </div>
-            </div>
-        }
-        </div>
 </div>
 
 
