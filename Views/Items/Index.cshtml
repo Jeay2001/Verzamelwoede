@@ -51,10 +51,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                    €@Html.DisplayFor(modelItem => item.Price)
+                    € @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                    €@Html.DisplayFor(modelItem => item.Worth)
+                    € @Html.DisplayFor(modelItem => item.Worth)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.YearOfPurchase)
@@ -75,14 +75,15 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-custom" >Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom" >Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id"class="btn-danger" >Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn-custom">Create New</a>
 </p>
+
