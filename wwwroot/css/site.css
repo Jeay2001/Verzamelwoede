@@ -51,6 +51,25 @@ body {
         color: white;
         text-decoration: none;
     }
+.btn-succes {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    background-color: transparent;
+    border: 2px solid black;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .btn-succes:hover {
+        background-color: green;
+        color: white;
+        text-decoration: none;
+    }
 
 .btn-custom:hover {
     background-color: black;
