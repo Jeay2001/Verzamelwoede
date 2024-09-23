@@ -80,3 +80,40 @@ body {
 .btn-custom:active {
     background-color: gray;
 }
+.container {
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align tables based on their content height */
+}
+
+.table-container {
+    margin-right: 20px;
+    width: 40%; /* Adjust as needed */
+
+}
+
+    .table-container:last-child {
+        margin-right: 0;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #839073; /* Background color directly on table */
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.table-header {
+    background-color: #28190E;
+    color: white;
+}
+
+.text-center {
+    text-align: center;
+}

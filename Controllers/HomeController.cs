@@ -20,8 +20,19 @@ namespace Verzamelwoede.Controllers
         public async Task<IActionResult> Index()
         {
             var items = await _context.Items.ToListAsync(); // Fetch all items from the database
-            return View(items); // Pass the list of items to the view
+            var collections = await _context.Collections.ToListAsync(); // Fetch all collections from the database
+
+            var viewModel = new HomePageViewModel
+            {
+                Items = items,
+                Collections = collections
+            };
+
+            return View(viewModel); // Pass the ViewModel to the view
         }
+
+
+
 
         public IActionResult Privacy()
         {
