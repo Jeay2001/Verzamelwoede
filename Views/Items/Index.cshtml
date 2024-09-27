@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Items";
-    var totalPrice = Model.Sum(item => item.Price);
+    var totalPrice = Model.Sum(item => item.Price * item.Quantity);
 }
 
 
