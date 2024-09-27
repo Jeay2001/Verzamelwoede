@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Verzamelwoede.Data;
 
@@ -11,9 +12,11 @@ using Verzamelwoede.Data;
 namespace Verzamelwoede.Migrations
 {
     [DbContext(typeof(VerzamelwoedeDB))]
-    partial class VerzamelwoedeDBModelSnapshot : ModelSnapshot
+    [Migration("20240927113824_Addedquantity")]
+    partial class Addedquantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

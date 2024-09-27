@@ -15,6 +15,7 @@ namespace VerzamelWoede.Models
         [Required]
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+        public int Quantity { get; set; }
 
         [Column(TypeName = "decimal(6, 2)")]
         public decimal Price { get; set; }

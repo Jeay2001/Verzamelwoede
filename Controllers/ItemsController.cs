@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VerzamelWoede.Models;
 using Verzamelwoede.Data;
+using Microsoft.Data.SqlClient;
 
 namespace Verzamelwoede.Controllers
 {
@@ -20,10 +21,42 @@ namespace Verzamelwoede.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var verzamelwoedeDB = _context.Items.Include(i => i.Category);
-            return View(await verzamelwoedeDB.ToListAsync());
+            // Get all items
+            var items = from i in _context.Items.Include(i => i.Category)
+                        select i;
+
+            // Handle sorting
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    items = items.OrderByDescending(i => i.Name);
+                    break;
+                case "price_asc":
+                    items = items.OrderBy(i => i.Price);
+                    break;
+                case "price_desc":
+                    items = items.OrderByDescending(i => i.Price);
+                    break;
+                case "date_asc":
+                    items = items.OrderBy(i => i.YearOfPurchase);
+                    break;
+                case "date_desc":
+                    items = items.OrderByDescending(i => i.YearOfPurchase);
+                    break;
+                case "category_asc":
+                    items = items.OrderBy(i => i.Category.Name);
+                    break;
+                case "category_desc":
+                    items = items.OrderByDescending(i => i.Category.Name);
+                    break;
+                default:
+                    items = items.OrderBy(i => i.Name); // Default to sorting by name ascending
+                    break;
+            }
+
+            return View(await items.ToListAsync());
         }
 
         // GET: Items/Details/5
@@ -57,7 +90,7 @@ namespace Verzamelwoede.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Worth,YearOfPurchase,Condition,Origin,IsSold,IsLost,CategoryId")] Item item)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Quantity,Price,Worth,YearOfPurchase,Condition,Origin,IsSold,IsLost,CategoryId")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +132,7 @@ namespace Verzamelwoede.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Worth,YearOfPurchase,Condition,Origin,IsSold,IsLost,CategoryId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Quantity,Price,Worth,YearOfPurchase,Condition,Origin,IsSold,IsLost,CategoryId")] Item item)
         {
             if (id != item.Id)
             {
