@@ -1,4 +1,4 @@
-﻿@model VerzamelWoede.Models.Category
+﻿@model Verzamelwoede.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,21 +10,31 @@
     <h4>Category</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Categories.First().Name) <!-- Assuming you have a single Category -->
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categories.First().Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Collection)
+        <dt class="col-sm-2">
+            @Html.DisplayName("Collections")
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Collection.Name)
+        <dd class="col-sm-10">
+            @if (Model.Collections != null && Model.Collections.Any())
+            {
+                @foreach (var collection in Model.Collections)
+                {
+                    @collection.Name<br />
+                }
+            }
+            else
+            {
+                <p>No collections available.</p>
+            }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-custom ">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Categories.First()?.Id" class="btn-custom">Edit</a> |
     <a asp-action="Index" class="btn-custom">Back to List</a>
 </div>

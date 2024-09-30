@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Verzamelwoede.Data;
 
@@ -10,9 +11,11 @@ using Verzamelwoede.Data;
 namespace Verzamelwoede.Migrations
 {
     [DbContext(typeof(VerzamelwoedeDB))]
-    partial class VerzamelwoedeDBModelSnapshot : ModelSnapshot
+    [Migration("20240930112337_ManytoManyCategoryColleciton")]
+    partial class ManytoManyCategoryColleciton
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

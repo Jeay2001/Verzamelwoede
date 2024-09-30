@@ -15,7 +15,8 @@ namespace VerzamelWoede.Models
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
 
-        public ICollection<Category>? Categories { get; set; }
+        // Add a list of collections for many-to-many relationship
+        public List<Category> Categories { get; set; } = new List<Category>();
 
 
         public void Create() { }

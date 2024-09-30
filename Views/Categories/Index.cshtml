@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VerzamelWoede.Models.Category>
+﻿@model Verzamelwoede.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Categories";
@@ -6,34 +6,47 @@
 
 
 
-<table class="table" style=" border: 1px solid black; margin-top:5px;">
+
+<table class="table" style="border: 1px solid black; margin-top:5px;">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Categories.First().Name) <!-- Correct reference to model -->
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Collection)
+                Collections
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Collection.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-custom" >Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom" >Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-danger" >Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var category in Model.Categories)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => category.Name)
+                </td>
+                <td>
+                    @if (category.Collections != null && category.Collections.Any())
+                    {
+                        @foreach (var collection in category.Collections)
+                        {
+                            @collection.Name <br />
+                        }
+                        
+                    }
+                    else
+                    {
+                        <span>No Collections</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn-custom">Edit</a>
+                    <a asp-action="Details" asp-route-id="@category.Id" class="btn-custom">Details</a>
+                    <a asp-action="Delete" asp-route-id="@category.Id" class="btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <p>

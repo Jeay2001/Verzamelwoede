@@ -14,13 +14,10 @@ namespace VerzamelWoede.Models
         [Required]
         public string Name { get; set; } = null!;
 
-        //foreign key naar de collection
-        public int CollectionId { get; set; }
-
-        public virtual Collection? Collection { get; set; } = null!;
+        // Add a list of categories for many-to-many relationship
+        public List<Collection> Collections { get; set; } = new List<Collection>();
 
         //navigatie property naar de collection
-        public ICollection<Collection>? Collections { get; set; }
         public ICollection<Item>? Items { get; set; }
 
 

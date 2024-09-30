@@ -25,13 +25,15 @@ namespace Verzamelwoede.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Collection to Category (one-to-many)
+            // Collection to Category (Many-to-many)
             modelBuilder.Entity<Category>()
-                .HasOne(c => c.Collection)
+                .HasMany(c => c.Collections)
                 .WithMany(c => c.Categories)
-                .HasForeignKey(c => c.CollectionId);
-
-
+                .UsingEntity<Dictionary<string, object>>(
+                    "CategoryCollection",
+                    j => j.HasOne<Collection>().WithMany().HasForeignKey("CollectionId"),
+                    j => j.HasOne<Category>().WithMany().HasForeignKey("CategoryId")
+                );
             // Category to Item (one-to-many)
             modelBuilder.Entity<Item>()
                 .HasOne(i => i.Category)

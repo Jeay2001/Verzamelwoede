@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VerzamelWoede.Models;
 using Verzamelwoede.Data;
+using Verzamelwoede.Models;
 
 namespace Verzamelwoede.Controllers
 {
@@ -22,9 +23,14 @@ namespace Verzamelwoede.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var verzamelwoedeDB = _context.Categories.Include(c => c.Collection);
-            return View(await verzamelwoedeDB.ToListAsync());
+            var viewModel = new CategoryViewModel
+            {
+                Categories = await _context.Categories.Include(c => c.Collections).ToListAsync(),
+                Collections = await _context.Collections.ToListAsync()
+            };
+            return View(viewModel);
         }
+
 
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -35,21 +41,31 @@ namespace Verzamelwoede.Controllers
             }
 
             var category = await _context.Categories
-                .Include(c => c.Collection)
+                .Include(c => c.Collections) // Include related Collections
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            var viewModel = new CategoryViewModel
+            {
+                Categories = new List<Category> { category },  // Pass the selected Category
+                Collections = category.Collections.ToList()    // Pass the related Collections
+            };
+
+            return View(viewModel);
         }
 
         // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["CollectionId"] = new SelectList(_context.Collections, "Id", "Name");
-            return View();
+            var viewModel = new CategoryViewModel
+            {
+                Collections = _context.Collections.ToList() // Populate the available collections
+            };
+            return View(viewModel);
         }
 
         // POST: Categories/Create
@@ -57,16 +73,25 @@ namespace Verzamelwoede.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CollectionId")] Category category)
+        public async Task<IActionResult> Create(CategoryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var category = new Category
+                {
+                    Name = viewModel.Categories.First().Name, // Get the category name from the view model
+                    Collections = _context.Collections
+                                    .Where(c => viewModel.SelectedCollectionIds.Contains(c.Id)) // Attach selected collections
+                                    .ToList()
+                };
+
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CollectionId"] = new SelectList(_context.Collections, "Id", "Name", category.CollectionId);
-            return View(category);
+
+            viewModel.Collections = _context.Collections.ToList(); // If model state is invalid, repopulate collections
+            return View(viewModel);
         }
 
         // GET: Categories/Edit/5
@@ -77,23 +102,37 @@ namespace Verzamelwoede.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories
+                .Include(c => c.Collections) // Include the collections for the category
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
             }
-            ViewData["CollectionId"] = new SelectList(_context.Collections, "Id", "Name", category.CollectionId);
-            return View(category);
+
+            // Initialize the view model and set the selected collections
+            var viewModel = new CategoryViewModel
+            {
+                Categories = await _context.Categories.ToListAsync(),
+                Collections = await _context.Collections.ToListAsync(),
+                SelectedCollectionIds = category.Collections.Select(c => c.Id).ToList()
+            };
+
+            return View(viewModel);
         }
+    
+
+
 
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionId")] Category category)
+        public async Task<IActionResult> Edit(int id, CategoryViewModel viewModel)
         {
-            if (id != category.Id)
+            if (id != viewModel.Categories.First().Id)
             {
                 return NotFound();
             }
@@ -102,12 +141,25 @@ namespace Verzamelwoede.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    var category = await _context.Categories
+                        .Include(c => c.Collections)
+                        .FirstOrDefaultAsync(c => c.Id == id);
+
+                    if (category != null)
+                    {
+                        // Update the category's collections
+                        category.Collections = _context.Collections
+                            .Where(c => viewModel.SelectedCollectionIds.Contains(c.Id))
+                            .ToList();
+
+                        category.Name = viewModel.Categories.First().Name; // Update category name
+                        _context.Update(category);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!CategoryExists(viewModel.Categories.First().Id))
                     {
                         return NotFound();
                     }
@@ -118,9 +170,12 @@ namespace Verzamelwoede.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CollectionId"] = new SelectList(_context.Collections, "Id", "Name", category.CollectionId);
-            return View(category);
+
+            // If invalid, repopulate viewModel's collections
+            viewModel.Collections = _context.Collections.ToList();
+            return View(viewModel);
         }
+
 
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -131,7 +186,7 @@ namespace Verzamelwoede.Controllers
             }
 
             var category = await _context.Categories
-                .Include(c => c.Collection)
+                .Include(c => c.Collections)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
