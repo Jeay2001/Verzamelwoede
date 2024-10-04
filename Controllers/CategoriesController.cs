@@ -41,8 +41,9 @@ namespace Verzamelwoede.Controllers
             }
 
             var category = await _context.Categories
-                .Include(c => c.Collections) // Include related Collections
-                .FirstOrDefaultAsync(m => m.Id == id);
+            .Include(c => c.Items)  // Ensure we load the items related to the category
+            .Include(c => c.Collections) // If needed, still include collections
+            .FirstOrDefaultAsync(m => m.Id == id);
 
             if (category == null)
             {

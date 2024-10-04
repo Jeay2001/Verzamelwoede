@@ -18,10 +18,10 @@ namespace Verzamelwoede.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Data Source=.; Initial Catalog=VerzamelWoede;Integrated Security=true;TrustServerCertificate=True;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(@"Data Source=.; Initial Catalog=VerzamelWoede;Integrated Security=true;TrustServerCertificate=True;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

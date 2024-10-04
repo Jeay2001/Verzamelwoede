@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Verzamelwoede.Data;
 
 namespace Verzamelwoede
@@ -10,8 +11,10 @@ namespace Verzamelwoede
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<VerzamelwoedeDB>();
-            
+            builder.Services.AddDbContext<VerzamelwoedeDB>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
             var app = builder.Build();
 

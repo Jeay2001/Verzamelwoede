@@ -1,4 +1,4 @@
-﻿@model VerzamelWoede.Models.Category
+﻿@model Verzamelwoede.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,18 +13,30 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Category.Name" class="control-label"></label>
+                <input asp-for="Category.Name" class="form-control" />
+                <span asp-validation-for="Categories.First().Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>Select Collections</label>
-                <select asp-for="Collections" multiple="multiple" class="form-control" name="selectedCollections">
-                    @foreach (var collection in Model.Collections)
+                <div>
+                    @if (Model.Collections != null && Model.Collections.Any())
                     {
-                        <option value="@collection.Id">@collection.Name</option>
+                        @foreach (var collection in Model.Collections)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@collection.Id" name="SelectedCollectionIds" id="collection_@collection.Id">
+                                <label class="form-check-label" for="collection_@collection.Id">
+                                    @collection.Name
+                                </label>
+                            </div>
+                        }
                     }
-                </select>
+                    else
+                    {
+                        <p>No collections available.</p>
+                    }
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />
