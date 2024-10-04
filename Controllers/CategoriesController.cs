@@ -52,6 +52,8 @@ namespace Verzamelwoede.Controllers
 
             var viewModel = new CategoryViewModel
             {
+                Category = category,
+                Items = category.Items.ToList(), // Get the items for this category
                 Categories = new List<Category> { category },  // Pass the selected Category
                 Collections = category.Collections.ToList()    // Pass the related Collections
             };

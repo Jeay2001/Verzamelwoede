@@ -8,5 +8,6 @@ namespace Verzamelwoede.Models
         public List<Collection> Collections { get; set; } = new List<Collection>();
         public List<int>? SelectedCollectionIds { get; set; } = new List<int>();
         public Category? Category { get; set; } = new Category();
+        public List<Item>? Items { get; set; }
     }
 }

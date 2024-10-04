@@ -6,8 +6,8 @@
 
 <div class="container">
     <!-- First Div for Items Table -->
-    <div class="table-container" style=" border: 1px solid black;">
-        <table>
+    <div class="table-container" >
+        <table class="table">
             <!-- Header row -->
             <thead>
                 <tr class="table-header">
@@ -47,42 +47,42 @@
     </div>
 
     <!-- Second Div for Collections Table -->
-    <div class="table-container" style=" border: 1px solid black;">
-        <table>
-            <!-- Header row -->
-            <thead>
-                <tr class="table-header">
-                    <th colspan="2" class="text-center">My Collections</th>
-                </tr>
-            </thead>
+    <div class="table-container">
+    <table class ="table">
+        <!-- Header row -->
+        <thead >
+            <tr class="table-header">
+                <th colspan="2" class="text-center">My Collections</th>
+            </tr>
+        </thead>
 
-            <!-- Column headers row -->
-            <thead>
+        <!-- Column headers row -->
+        <thead>
+            <tr>
+                <th style="font-weight:bold; border-bottom:none">Name</th>
+            </tr>
+        </thead>
+
+        <!-- Data rows -->
+        <tbody>
+            @foreach (var collection in Model.Collections)
+            {
                 <tr>
-                    <th style="font-weight:bold; border-bottom:none">Name</th>
+                    <td style="border-bottom:none">@Html.DisplayFor(modelItem => collection.Name)</td>
                 </tr>
-            </thead>
+            }
+        </tbody>
 
-            <!-- Data rows -->
-            <tbody>
-                @foreach (var collection in Model.Collections)
-                {
-                    <tr>
-                        <td style="border-bottom:none">@Html.DisplayFor(modelItem => collection.Name)</td>
-                    </tr>
-                }
-            </tbody>
-
-            <!-- Buttons row -->
-            <tfoot>
-                <tr>
-                    <td colspan="2" class="text-center">
-                        <a href="#" class="btn-custom">Manage</a>
-                        <a href="#" class="btn-danger">Delete</a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <!-- Buttons row -->
+        <tfoot>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <a href="#" class="btn-custom">Manage</a>
+                    <a href="#" class="btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
     </div>
 </div>
 

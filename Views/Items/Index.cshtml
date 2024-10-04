@@ -5,6 +5,12 @@
     var totalPrice = Model.Sum(item => item.Price * item.Quantity);
 }
 
+<div>
+    <form asp-action="Index" method="get">
+        <input type="text" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Search items..." class="form-control" style="width: 300px; display: inline-block;" />
+        <input type="submit" value="Search" class="btn btn-custom" />
+    </form>
+</div>
 
 <div style="flex-grow: 1;">
     <!-- Dropdown form for sorting -->
@@ -29,8 +35,8 @@
     <h4>Total Price: €@totalPrice</h4>
 </div>
 
-<table class="table" style=" border: 1px solid black; margin-top:5px;">
-    <thead>
+<table class="table">
+    <thead class="table-header" >
         <tr>
             <th>@Html.DisplayNameFor(model => model.Name)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
@@ -43,6 +49,8 @@
             <th>@Html.DisplayNameFor(model => model.IsSold)</th>
             <th>@Html.DisplayNameFor(model => model.IsLost)</th>
             <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>@Html.DisplayName("")</th>
+            
         </tr>
     </thead>
     <tbody>
