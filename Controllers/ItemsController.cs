@@ -21,11 +21,19 @@ namespace Verzamelwoede.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchTerm)
         {
-            // Get all items
+            // Get all items including the category
             var items = from i in _context.Items.Include(i => i.Category)
                         select i;
+
+            // Handle searching
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                items = items.Where(i => i.Name.Contains(searchTerm) ||
+                                         i.Description.Contains(searchTerm) ||
+                                         i.Category.Name.Contains(searchTerm)); // Add any other searchable fields
+            }
 
             // Handle sorting
             switch (sortOrder)
@@ -56,8 +64,12 @@ namespace Verzamelwoede.Controllers
                     break;
             }
 
+            // Pass the search term back to the view
+            ViewData["SearchTerm"] = searchTerm;
+
             return View(await items.ToListAsync());
         }
+
 
         // GET: Items/Details/5
         public async Task<IActionResult> Details(int? id)

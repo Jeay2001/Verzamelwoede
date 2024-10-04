@@ -7,7 +7,8 @@
 
 <div>
     <form asp-action="Index" method="get">
-        <input type="text" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Search items..." class="form-control" style="width: 300px; display: inline-block;" />
+        <label for="searchTerm" class="form-label">Search Items:</label>
+        <input type="text" id="searchTerm" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Search items..." class="form-control" style="width: 300px; display: inline-block;" />
         <input type="submit" value="Search" class="btn btn-custom" />
     </form>
 </div>
