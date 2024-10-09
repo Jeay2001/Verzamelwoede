@@ -1,8 +1,7 @@
-﻿@model IEnumerable<VerzamelWoede.Models.Item>
-
+﻿@model IEnumerable<Verzamelwoede.Models.ItemViewModel>
 @{
     ViewData["Title"] = "Items";
-    var totalPrice = Model.Sum(item => item.Price * item.Quantity);
+
 }
 
 <div>
@@ -33,70 +32,48 @@
     </div>
 </div>
 <div>
-    <h4>Total Price: €@totalPrice</h4>
+    <h4>Total Price: €@ViewBag.GrandTotalPrice</h4>
 </div>
 
 <table class="table">
-    <thead class="table-header" >
+    <thead class="table-header">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.Description)</th>
-            <th>@Html.DisplayNameFor(model => model.Quantity)</th>
-            <th>@Html.DisplayNameFor(model => model.Price)</th>
-            <th>@Html.DisplayNameFor(model => model.Worth)</th>
-            <th>@Html.DisplayNameFor(model => model.YearOfPurchase)</th>
-            <th>@Html.DisplayNameFor(model => model.Condition)</th>
-            <th>@Html.DisplayNameFor(model => model.Origin)</th>
-            <th>@Html.DisplayNameFor(model => model.IsSold)</th>
-            <th>@Html.DisplayNameFor(model => model.IsLost)</th>
-            <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Quantity)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Worth)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.YearOfPurchase)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Condition)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Origin)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.IsSold)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.IsLost)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Item.Category.Name)</th>
             <th>@Html.DisplayName("")</th>
-            
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                    € @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                    € @Html.DisplayFor(modelItem => item.Worth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearOfPurchase)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Origin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSold)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsLost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-custom" >Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom" >Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id"class="btn-danger" >Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var itemViewModel in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Quantity)</td>
+                <td>€ @Html.DisplayFor(modelItem => itemViewModel.Item.Price)</td>
+                <td>€ @Html.DisplayFor(modelItem => itemViewModel.Item.Worth)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.YearOfPurchase)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Condition)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Origin)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.IsSold)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.IsLost)</td>
+                <td>@Html.DisplayFor(modelItem => itemViewModel.Item.Category.Name)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@itemViewModel.Item.Id" class="btn-custom">Edit</a>
+                    <a asp-action="Details" asp-route-id="@itemViewModel.Item.Id" class="btn-custom">Details</a>
+                    <a asp-action="Delete" asp-route-id="@itemViewModel.Item.Id" class="btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

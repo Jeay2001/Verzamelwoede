@@ -82,7 +82,7 @@ namespace Verzamelwoede.Controllers
             {
                 var category = new Category
                 {
-                    Name = viewModel.Categories.First().Name, // Get the category name from the view model
+                    Name = viewModel.Category.Name, // Get the category name from the view model
                     Collections = _context.Collections
                                     .Where(c => viewModel.SelectedCollectionIds.Contains(c.Id)) // Attach selected collections
                                     .ToList()

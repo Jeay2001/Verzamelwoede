@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using VerzamelWoede.Models;
 using Verzamelwoede.Data;
 using Microsoft.Data.SqlClient;
+using Verzamelwoede.Models;
 
 namespace Verzamelwoede.Controllers
 {
@@ -30,9 +31,7 @@ namespace Verzamelwoede.Controllers
             // Handle searching
             if (!String.IsNullOrEmpty(searchTerm))
             {
-                items = items.Where(i => i.Name.Contains(searchTerm) ||
-                                         i.Description.Contains(searchTerm) ||
-                                         i.Category.Name.Contains(searchTerm)); // Add any other searchable fields
+                items = items.Where(i => i.Name.Contains(searchTerm));
             }
 
             // Handle sorting
@@ -64,10 +63,22 @@ namespace Verzamelwoede.Controllers
                     break;
             }
 
+            // Convert each Item into ItemViewModel
+            var viewModelList = await items.Select(i => new ItemViewModel
+            {
+                Item = i
+            }).ToListAsync();
+
+            // Calculate the grand total
+            decimal grandTotalPrice = viewModelList.Sum(vm => vm.TotalPrice);
+
             // Pass the search term back to the view
             ViewData["SearchTerm"] = searchTerm;
 
-            return View(await items.ToListAsync());
+            // Pass the grand total to the view
+            ViewBag.GrandTotalPrice = grandTotalPrice;
+
+            return View(viewModelList);
         }
 
 
