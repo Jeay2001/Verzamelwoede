@@ -7,6 +7,6 @@ namespace Verzamelwoede.Models
 
         public Item? Item { get; set; }
         // Add a property for total price calculation
-        public decimal TotalPrice => Item.Price* Item.  Quantity;
+        public decimal TotalPrice => Item.Price* Item.Quantity;
     }
 }

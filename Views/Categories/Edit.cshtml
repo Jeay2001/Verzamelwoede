@@ -12,13 +12,12 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Categories[0].Id" /> <!-- Assuming only one category being edited -->
-            
+            <input type="hidden" asp-for="Category.Id" /> <!-- Assuming only one category being edited -->
             <!-- Category Name -->
             <div class="form-group">
-                <label asp-for="Categories[0].Name" class="control-label"></label>
-                <input asp-for="Categories[0].Name" class="form-control" />
-                <span asp-validation-for="Categories[0].Name" class="text-danger"></span>
+                <label asp-for="Category.Name" class="control-label"></label>
+                <input asp-for="Category.Name" class="form-control" />
+                <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
 
             <!-- Collections -->
@@ -27,9 +26,10 @@
                 @foreach (var collection in Model.Collections)
                 {
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="@collection.Id" 
-                               name="SelectedCollectionIds" 
-                               @(Model.Categories[0].Collections.Any(c => c.Id == collection.Id) ? "checked" : "") />
+                        <input class="form-check-input" type="checkbox" value="@collection.Id"
+                               name="SelectedCollectionIds"
+                        @(Model.Category.Collections != null &&
+                            Model.Category.Collections.Any(c => c.Id == collection.Id) ? "checked" : "") />
                         <label class="form-check-label">@collection.Name</label>
                     </div>
                 }

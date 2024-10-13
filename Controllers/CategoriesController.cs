@@ -106,7 +106,7 @@ namespace Verzamelwoede.Controllers
             }
 
             var category = await _context.Categories
-                .Include(c => c.Collections) // Include the collections for the category
+                .Include(c => c.Collections)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (category == null)
@@ -114,18 +114,17 @@ namespace Verzamelwoede.Controllers
                 return NotFound();
             }
 
-            // Initialize the view model and set the selected collections
+            // Initialize the view model and handle empty collections
             var viewModel = new CategoryViewModel
             {
+                Category = category,
                 Categories = await _context.Categories.ToListAsync(),
                 Collections = await _context.Collections.ToListAsync(),
-                SelectedCollectionIds = category.Collections.Select(c => c.Id).ToList()
+                SelectedCollectionIds = category.Collections?.Select(c => c.Id).ToList() ?? new List<int>()
             };
 
             return View(viewModel);
         }
-    
-
 
 
         // POST: Categories/Edit/5
@@ -135,47 +134,44 @@ namespace Verzamelwoede.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CategoryViewModel viewModel)
         {
-            if (id != viewModel.Categories.First().Id)
+            // Check if the ID in the view model matches the ID from the route
+            if (id != viewModel.Category.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
+                
+                    // Find the existing category
                     var category = await _context.Categories
                         .Include(c => c.Collections)
                         .FirstOrDefaultAsync(c => c.Id == id);
 
-                    if (category != null)
+                    if (category == null)
                     {
-                        // Update the category's collections
-                        category.Collections = _context.Collections
-                            .Where(c => viewModel.SelectedCollectionIds.Contains(c.Id))
-                            .ToList();
+                        return NotFound(); // Return NotFound if category doesn't exist
+                    }
 
-                        category.Name = viewModel.Categories.First().Name; // Update category name
-                        _context.Update(category);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(viewModel.Categories.First().Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    // Update the category's collections based on the selected IDs
+                    category.Collections = await _context.Collections
+                        .Where(c => viewModel.SelectedCollectionIds.Contains(c.Id))
+                        .ToListAsync();
+
+                    // Update the category name
+                    category.Name = viewModel.Category.Name;
+
+                    // Mark the category as modified
+                    _context.Entry(category).State = EntityState.Modified;
+
+                    // Save changes to the database
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index)); // Redirect to the Index action on success
             }
 
-            // If invalid, repopulate viewModel's collections
-            viewModel.Collections = _context.Collections.ToList();
+            // If ModelState is invalid or there are errors, reload collections for the view model
+            viewModel.Collections = await _context.Collections.ToListAsync();
             return View(viewModel);
         }
 
